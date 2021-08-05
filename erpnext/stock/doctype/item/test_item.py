@@ -14,6 +14,7 @@ from erpnext.stock.doctype.item.item import get_uom_conv_factor
 from frappe.model.rename_doc import rename_doc
 from erpnext.stock.doctype.stock_entry.stock_entry_utils import make_stock_entry
 from erpnext.stock.get_item_details import get_item_details
+from erpnext.stock.doctype.warehouse.test_warehouse import create_warehouse
 
 from six import iteritems
 
@@ -36,9 +37,13 @@ def make_item(item_code, properties=None):
 		item.update(properties)
 
 	if item.is_stock_item:
+		warehouse = "_Test Warehouse - _TC"
 		for item_default in [doc for doc in item.get("item_defaults") if not doc.default_warehouse]:
-			item_default.default_warehouse = "_Test Warehouse - _TC"
+			item_default.default_warehouse = warehouse
 			item_default.company = "_Test Company"
+		if not frappe.db.exists('Warehouse', warehouse):
+			create_warehouse(warehouse)
+
 	item.insert()
 
 	return item
