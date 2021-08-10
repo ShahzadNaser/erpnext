@@ -30,6 +30,7 @@ def make_item(item_code, properties=None):
 		"item_code": item_code,
 		"item_name": item_code,
 		"description": item_code,
+		"is_sales_item": 1,
 		"item_group": "Products"
 	})
 
@@ -500,7 +501,7 @@ def make_item_variant():
 
 test_records = frappe.get_test_records('Item')
 
-def create_item(item_code, is_stock_item=None, valuation_rate=0, warehouse=None, is_customer_provided_item=None, customer=None, is_purchase_item=None, opening_stock=None):
+def create_item(item_code, is_stock_item=None, valuation_rate=0, warehouse=None, is_customer_provided_item=None, customer=None, is_purchase_item=None, opening_stock=None,is_sales_item=None):
 	if not frappe.db.exists("Item", item_code):
 		item = frappe.new_doc("Item")
 		item.item_code = item_code
@@ -509,6 +510,7 @@ def create_item(item_code, is_stock_item=None, valuation_rate=0, warehouse=None,
 		item.item_group = "All Item Groups"
 		item.is_stock_item = is_stock_item or 1
 		item.opening_stock = opening_stock or 0
+		item.is_sales_item = is_sales_item or 0
 		item.valuation_rate = valuation_rate or 0.0
 		item.is_purchase_item = is_purchase_item
 		item.is_customer_provided_item = is_customer_provided_item
