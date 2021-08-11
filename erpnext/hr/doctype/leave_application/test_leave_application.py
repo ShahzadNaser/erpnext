@@ -55,7 +55,7 @@ class TestLeaveApplication(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		set_leave_approver()
-		make_email_notification()
+		update_email_notification()
 
 	def tearDown(self):
 		frappe.set_user("Administrator")
@@ -598,18 +598,10 @@ def set_leave_approver():
 	})
 	dept_doc.save(ignore_permissions=True)
 
-def make_email_notification():
-	if not frappe.db.exists("Email Template","Leave Status Notification"):
-		doc = frappe.get_doc(dict(
-			name = "Leave Status Notification",
-			subject = "Leave Status Notification",
-			response = "Dispatch Notification Test Response",
-			doctype = "Email Template"
-		))
-		doc.flags.ignore_validate=True
-		doc.flags.ignore_links=True
-		doc.insert()
-
+def update_email_notification():
+	frappe.db.set_value("HR Settings", None, "leave_status_notification_template", "")
+	frappe.db.set_value("HR Settings", None, "leave_approval_notification_template", "")
+	
 def get_leave_period():
 	leave_period_name = frappe.db.exists({
 		"doctype": "Leave Period",
