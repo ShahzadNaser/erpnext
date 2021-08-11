@@ -55,6 +55,7 @@ class TestLeaveApplication(unittest.TestCase):
 	@classmethod
 	def setUpClass(cls):
 		set_leave_approver()
+		make_email_notification()
 
 	def tearDown(self):
 		frappe.set_user("Administrator")
@@ -508,6 +509,9 @@ class TestLeaveApplication(unittest.TestCase):
 
 	def test_ledger_entry_creation_on_intermediate_allocation_expiry(self):
 		employee = get_employee()
+		if not frappe.db.exists("Salary Component","Leave Encashment"):
+			from erpnext.hr.doctype.salary_component.test_salary_component import create_salary_component
+			create_salary_component("Leave Encashment")
 		leave_type = create_leave_type(
 			leave_type_name="_Test_CF_leave_expiry",
 			is_carry_forward=1,
@@ -593,6 +597,18 @@ def set_leave_approver():
 		'approver': 'test@example.com'
 	})
 	dept_doc.save(ignore_permissions=True)
+
+def make_email_notification():
+	if not frappe.db.exists("Email Template","Leave Status Notification"):
+		doc = frappe.get_doc(dict(
+			name = "Leave Status Notification",
+			subject = "Leave Status Notification",
+			response = "Dispatch Notification Test Response",
+			doctype = "Email Template"
+		))
+		doc.flags.ignore_validate=True
+		doc.flags.ignore_links=True
+		doc.insert()
 
 def get_leave_period():
 	leave_period_name = frappe.db.exists({
