@@ -257,7 +257,8 @@
   {
    "fieldname": "signee_company",
    "fieldtype": "Signature",
-   "label": "Signature (Company)"
+   "label": "Signature (Company)",
+   "no_copy": 1
   },
   {
    "fieldname": "signed_by_company",
@@ -337,6 +338,7 @@
    "fieldname": "customer_signature",
    "fieldtype": "Signature",
    "label": "Customer Signature",
+   "no_copy": 1,
    "print_hide": 1,
    "read_only": 1
   },
@@ -377,7 +379,7 @@
   }
  ],
  "is_submittable": 1,
- "modified": "2021-07-05 22:26:35.481510",
+ "modified": "2021-07-19 02:04:04.822710",
  "modified_by": "Administrator",
  "module": "CRM",
  "name": "Contract",

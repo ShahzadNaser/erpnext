@@ -12,6 +12,7 @@ TAX_ACCOUNT_HEAD = frappe.db.get_single_value("TaxJar Settings", "tax_account_he
 SHIP_ACCOUNT_HEAD = frappe.db.get_single_value("TaxJar Settings", "shipping_account_head")
 TAXJAR_CREATE_TRANSACTIONS = frappe.db.get_single_value("TaxJar Settings", "taxjar_create_transactions")
 TAXJAR_CALCULATE_TAX = frappe.db.get_single_value("TaxJar Settings", "taxjar_calculate_tax")
+TAXJAR_ENABLED = frappe.db.get_single_value("TaxJar Settings", "enabled")
 SUPPORTED_COUNTRY_CODES = ["AT", "AU", "BE", "BG", "CA", "CY", "CZ", "DE", "DK", "EE", "ES", "FI",
 	"FR", "GB", "GR", "HR", "HU", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PL", "PT", "RO",
 	"SE", "SI", "SK", "US"]
@@ -19,6 +20,9 @@ SUPPORTED_COUNTRY_CODES = ["AT", "AU", "BE", "BG", "CA", "CY", "CZ", "DE", "DK",
 class AddressError(frappe.ValidationError): pass
 
 def get_client():
+	if not TAXJAR_ENABLED:
+		return
+
 	taxjar_settings = frappe.get_single("TaxJar Settings")
 
 	if not taxjar_settings.is_sandbox:
@@ -29,8 +33,11 @@ def get_client():
 		api_url = taxjar.SANDBOX_API_URL
 
 	if api_key and api_url:
-		return taxjar.Client(api_key=api_key, api_url=api_url)
-
+		client = taxjar.Client(api_key=api_key, api_url=api_url)
+		client.set_api_config('headers', {
+			'x-api-version': '2020-08-07'
+		})
+		return client
 
 def create_transaction(doc, method):
 	"""Create an order transaction in TaxJar"""
@@ -112,7 +119,8 @@ def get_tax_data(doc):
 		'to_street': to_address.address_line1,
 		'to_state': to_shipping_state,
 		'shipping': shipping,
-		'amount': doc.net_total
+		'amount': doc.net_total,
+		'plugin': '[bloomstack]'
 	}
 
 	return tax_dict
@@ -144,6 +152,15 @@ def set_sales_tax(doc, method):
 		# Remove existing tax rows if address is changed from a taxable state/country
 		setattr(doc, "taxes", [tax for tax in doc.taxes if tax.account_head != TAX_ACCOUNT_HEAD])
 		return
+
+	tax_dict['nexus_address'] = [{
+		'id': doc.company_address,
+		'country': tax_dict.get("from_country"),
+		'zip': tax_dict.get("from_zip"),
+		'state': tax_dict.get("from_state"),
+		'city': tax_dict.get("from_city"),
+		'street': tax_dict.get("from_street")
+	}]
 
 	tax_data = validate_tax_request(tax_dict)
 
@@ -257,3 +274,4 @@ def sanitize_error_response(response):
 		response = response.replace(k, v)
 
 	return response
+
