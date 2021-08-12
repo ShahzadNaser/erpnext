@@ -66,7 +66,7 @@ def make_employee(user, company=None):
 			"doctype": "Employee",
 			"naming_series": "EMP-",
 			"first_name": "John",
-   			"last_name": "Doe",
+			"last_name": "Doe",
 			"company": company or erpnext.get_default_company(),
 			"user_id": user,
 			"date_of_birth": "1990-05-08",

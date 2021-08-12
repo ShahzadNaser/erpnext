@@ -601,7 +601,7 @@ def set_leave_approver():
 def update_email_notification():
 	frappe.db.set_value("HR Settings", None, "leave_status_notification_template", "")
 	frappe.db.set_value("HR Settings", None, "leave_approval_notification_template", "")
-	
+
 def get_leave_period():
 	leave_period_name = frappe.db.exists({
 		"doctype": "Leave Period",
