@@ -13,37 +13,36 @@ from erpnext.hr.doctype.leave_allocation.test_leave_allocation import create_lea
 
 test_dependencies = ["Leave Allocation", "Leave Block List"]
 
-_test_records = [
- {
-  "company": "_Test Company",
-  "doctype": "Leave Application",
-  "employee": "_T-Employee-00001",
-  "from_date": "2013-05-01",
-  "description": "_Test Reason",
-  "leave_type": "_Test Leave Type",
-  "posting_date": "2013-01-02",
-  "to_date": "2013-05-05"
- },
- {
-  "company": "_Test Company",
-  "doctype": "Leave Application",
-  "employee": "_T-Employee-00002",
-  "from_date": "2013-05-01",
-  "description": "_Test Reason",
-  "leave_type": "_Test Leave Type",
-  "posting_date": "2013-01-02",
-  "to_date": "2013-05-05"
- },
- {
-  "company": "_Test Company",
-  "doctype": "Leave Application",
-  "employee": "_T-Employee-00001",
-  "from_date": "2013-01-15",
-  "description": "_Test Reason",
-  "leave_type": "_Test Leave Type LWP",
-  "posting_date": "2013-01-02",
-  "to_date": "2013-01-15"
- }
+_test_records = [{
+	"company": "_Test Company",
+	"doctype": "Leave Application",
+	"employee": "_T-Employee-00001",
+	"from_date": "2013-05-01",
+	"description": "_Test Reason",
+	"leave_type": "_Test Leave Type",
+	"posting_date": "2013-01-02",
+	"to_date": "2013-05-05"
+	},
+	{
+	"company": "_Test Company",
+	"doctype": "Leave Application",
+	"employee": "_T-Employee-00002",
+	"from_date": "2013-05-01",
+	"description": "_Test Reason",
+	"leave_type": "_Test Leave Type",
+	"posting_date": "2013-01-02",
+	"to_date": "2013-05-05"
+	},
+	{
+	"company": "_Test Company",
+	"doctype": "Leave Application",
+	"employee": "_T-Employee-00001",
+	"from_date": "2013-01-15",
+	"description": "_Test Reason",
+	"leave_type": "_Test Leave Type LWP",
+	"posting_date": "2013-01-02",
+	"to_date": "2013-01-15"
+	}
 ]
 
 
