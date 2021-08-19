@@ -102,14 +102,15 @@ class Student(Document):
 					progress.append({'content': content.name, 'content_type': content.doctype, 'is_complete': status, 'score': score, 'result': result})
 		return progress
 
-	def enroll_in_program(self, program_name):
+	def enroll_in_program(self, program_name, enroll_in_program_courses=False):
 		try:
 			enrollment = frappe.get_doc({
 					"doctype": "Program Enrollment",
 					"student": self.name,
 					"academic_year": frappe.get_last_doc("Academic Year").name,
 					"program": program_name,
-					"enrollment_date": frappe.utils.now_datetime()
+					"enrollment_date": frappe.utils.now_datetime(),
+					"enroll_in_program_courses": enroll_in_program_courses
 				})
 			enrollment.save(ignore_permissions=True)
 		except frappe.exceptions.ValidationError:
