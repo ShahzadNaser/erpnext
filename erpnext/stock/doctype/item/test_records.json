@@ -1,5 +1,25 @@
 [
  {
+  "company": "_Test Company",
+  "doctype": "Warehouse",
+  "warehouse_name": "_Test Warehouse",
+  "is_group": 0
+ },
+ {
+  "company": "_Test Company",
+  "doctype": "Warehouse",
+  "warehouse_name": "_Test Warehouse Group-C1",
+  "is_group": 0,
+  "parent_warehouse": "_Test Warehouse Group - _TC"
+ },
+ {
+  "company": "_Test Company",
+  "doctype": "Warehouse",
+  "warehouse_name": "_Test Warehouse Group-C2",
+  "is_group": 0,
+  "parent_warehouse": "_Test Warehouse Group - _TC"
+ },
+ {
   "description": "_Test Item 1",
   "doctype": "Item",
   "has_batch_no": 0,
