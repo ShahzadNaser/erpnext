@@ -6,8 +6,10 @@
  "field_order": [
   "project",
   "status",
+  "freeze",
   "column_break_2",
   "time_consumed",
+  "completion_date",
   "is_default"
  ],
  "fields": [
@@ -40,10 +42,21 @@
    "fieldtype": "Check",
    "in_list_view": 1,
    "label": "Is Default"
+  },
+  {
+   "default": "0",
+   "fieldname": "freeze",
+   "fieldtype": "Check",
+   "label": "Freeze"
+  },
+  {
+   "fieldname": "completion_date",
+   "fieldtype": "Date",
+   "label": "Completion Date"
   }
  ],
  "istable": 1,
- "modified": "2021-08-02 00:58:25.588112",
+ "modified": "2021-08-14 04:26:00.775223",
  "modified_by": "Administrator",
  "module": "Projects",
  "name": "Task Project",

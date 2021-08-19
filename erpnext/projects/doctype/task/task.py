@@ -33,10 +33,10 @@ class Task(NestedSet):
 	def validate(self):
 		self.validate_dates()
 		self.validate_parent_project_dates()
-		self.validate_progress()
 		self.validate_status()
 		self.update_depends_on()
 		self.validate_default_project()
+		self.update_completion_date()
 
 	def before_save(self):
 		change_idx = False
@@ -87,19 +87,6 @@ class Task(NestedSet):
 			if frappe.db.get_single_value("Projects Settings", "remove_assignment_on_task_completion"):
 				close_all_assignments(self.doctype, self.name)
 
-	def validate_progress(self):
-		if (self.progress or 0) > 100:
-			frappe.throw(_("Progress % for a task cannot be more than 100."))
-
-
-		if self.status == 'Completed':
-			self.progress = 100
-		elif self.status == 'Closed':
-			self.progress = 0
-
-		if self.status != 'Completed' and self.progress == 100:
-			frappe.throw(_("Task progress cannot be set 100% until status is not set as Completed"))
-
 	def update_depends_on(self):
 		depends_on_tasks = self.depends_on_tasks or ""
 		for d in self.depends_on:
@@ -136,6 +123,16 @@ class Task(NestedSet):
 		elif not len(self.projects):
 			# if no projects aviliable in projects make parent project empty
 			self.project = None
+
+	def update_completion_date(self):
+		for task_project in self.projects:
+			project = frappe.get_cached_doc("Project", task_project.project)
+			complete_statuses = ['Completed']
+			#needs to be replaced with a Table Multiselect after status is channged into a linked feild.
+			if project.task_completion_statuses:
+				complete_statuses = list(project.task_completion_statuses.split(","))
+			if not task_project.completion_date and task_project.status in complete_statuses:
+				task_project.completion_date = today()
 
 	def on_update(self):
 		self.update_nsm_model()
@@ -182,7 +179,8 @@ class Task(NestedSet):
 
 	def update_project(self):
 		if self.project and not self.flags.from_project:
-			frappe.get_cached_doc("Project", self.project).update_project()
+			for task_project in self.projects:
+				frappe.get_cached_doc("Project", task_project.project).update_project()
 
 	def check_recursion(self):
 		if self.flags.ignore_recursion_check: return

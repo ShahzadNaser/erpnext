@@ -16,7 +16,9 @@
   "configuration",
   "tax_account_head",
   "configuration_cb",
-  "shipping_account_head"
+  "shipping_account_head",
+  "section_break_12",
+  "company_account"
  ],
  "fields": [
   {
@@ -37,22 +39,6 @@
    "fieldname": "configuration",
    "fieldtype": "Section Break",
    "label": "Configuration"
-  },
-  {
-   "fieldname": "tax_account_head",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Tax Account Head",
-   "options": "Account",
-   "reqd": 1
-  },
-  {
-   "fieldname": "shipping_account_head",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Shipping Account Head",
-   "options": "Account",
-   "reqd": 1
   },
   {
    "default": "0",
@@ -87,6 +73,32 @@
   {
    "fieldname": "cb_keys",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tax_account_head",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Tax Account Head",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "shipping_account_head",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Shipping Account Head",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_12",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "company_account",
+   "fieldtype": "Table",
+   "label": "Company",
+   "options": "TaxJar Company"
   },
   {
    "default": "0",
