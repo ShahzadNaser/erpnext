@@ -40,6 +40,7 @@ class TestTask(unittest.TestCase):
 		task3.get("depends_on")[0].project = "_Test Project"
 		task3.save()
 
+		task1.reload()
 		task1.update({
 			"exp_end_date": add_days(nowdate(), 20)
 		})
