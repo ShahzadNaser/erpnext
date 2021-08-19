@@ -738,9 +738,10 @@ class TestStockEntry(unittest.TestCase):
 			'_Test Serialized Item With Series': 6.0
 		}
 
-		stock_entry = frappe.get_doc(_make_stock_entry(work_order.name, "Material Consumption for Manufacture", 2))
+		stock_entry = frappe.get_doc(_make_stock_entry(work_order.name, "Material Consumption for Manufacture", 10))
 		for d in stock_entry.get('items'):
-			self.assertEqual(item_quantity.get(d.item_code), d.qty)
+			if(item_quantity.get(d.item_code)):
+				self.assertEqual(item_quantity.get(d.item_code), d.qty)
 
 	def test_customer_provided_parts_se(self):
 		create_item('CUST-0987', is_customer_provided_item = 1, customer = '_Test Customer', is_purchase_item = 0)
