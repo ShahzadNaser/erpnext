@@ -26,6 +26,8 @@ class TestEmployee(unittest.TestCase):
 
 		hr_settings = frappe.get_doc("HR Settings", "HR Settings")
 		hr_settings.stop_birthday_reminders = 0
+		hr_settings.leave_approval_notification_template = ""
+		hr_settings.leave_status_notification_template = ""
 		hr_settings.save()
 
 		send_birthday_reminders()
@@ -81,4 +83,4 @@ def make_employee(user, company=None):
 		}).insert()
 		return employee.name
 	else:
-		return frappe.get_value("Employee", {"employee_name":user}, "name")
+		return frappe.get_value("Employee", {"user_id":user}, "name")
