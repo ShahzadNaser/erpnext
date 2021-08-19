@@ -53,6 +53,7 @@ def	create_loan(applicant, loan_type, loan_amount, repayment_method, repayment_p
 		loan = frappe.new_doc("Loan")
 		loan.update({
 				"applicant": applicant,
+				"applicant_type": "Employee",
 				"loan_type": loan_type,
 				"loan_amount": loan_amount,
 				"repayment_method": repayment_method,
