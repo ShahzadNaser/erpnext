@@ -8,6 +8,12 @@
  {
   "company": "_Test Company",
   "doctype": "Warehouse",
+  "warehouse_name": "_Test Warehouse Group",
+  "is_group": 1
+ },
+ {
+  "company": "_Test Company",
+  "doctype": "Warehouse",
   "warehouse_name": "_Test Warehouse Group-C1",
   "is_group": 0,
   "parent_warehouse": "_Test Warehouse Group - _TC"
