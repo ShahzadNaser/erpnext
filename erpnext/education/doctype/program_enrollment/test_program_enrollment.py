@@ -19,7 +19,7 @@ class TestProgramEnrollment(unittest.TestCase):
 
 	def test_create_course_enrollments(self):
 		student = get_student("_test_student@example.com")
-		enrollment = student.enroll_in_program("_Test Program 1")
+		student.enroll_in_program("_Test Program 1",True)
 		course_enrollments = student.get_all_course_enrollments()
 		self.assertTrue("_Test Course 1" in course_enrollments.keys())
 		self.assertTrue("_Test Course 2" in course_enrollments.keys())
