@@ -504,6 +504,8 @@ class TestAsset(unittest.TestCase):
 			'rate': 5.0
 		}])
 
+		frappe.db.set_value("Asset Category", "Computers", "enable_cwip_accounting", 1)
+
 		pr.submit()
 
 		expected_gle = (
