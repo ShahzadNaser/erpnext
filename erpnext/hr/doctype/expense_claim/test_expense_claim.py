@@ -21,15 +21,21 @@ class TestExpenseClaim(unittest.TestCase):
 
 		frappe.get_doc({
 			"project_name": "_Test Project 1",
-			"doctype": "Project"
+			"doctype": "Project",
+			"task_completion_statuses": "",
+			"expected_start_date": frappe.utils.nowdate(),
+			"expected_end_date": frappe.utils.add_to_date(frappe.utils.nowdate(), days=10)
 		}).save()
 
 		task = frappe.get_doc(dict(
 			doctype = 'Task',
-			subject = '_Test Project Task 1',
-			status = 'Open',
-			project = '_Test Project 1'
-		)).insert()
+			subject = '_Test Project Task 1'
+		))
+		task.append("projects", {
+			"is_default": 1,
+			"project": "_Test Project 1"
+		})
+		task.insert()
 
 		task_name = task.name
 		payable_account = get_payable_account(company_name)
