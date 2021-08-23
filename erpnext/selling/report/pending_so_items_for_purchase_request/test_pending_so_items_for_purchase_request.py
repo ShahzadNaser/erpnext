@@ -18,11 +18,11 @@ class TestPendingSOItemsForPurchaseRequest(unittest.TestCase):
         mr.schedule_date = add_months(nowdate(),1)
         mr.submit()
         report = execute()
-        l = len(report[1])
-        self.assertEqual((so.items[0].qty - mr.items[0].qty), report[1][l-1]['pending_qty'])
+        target_list = list(filter(lambda d: d['material_request'] in [mr.name], report[1]))
+        self.assertEqual((so.items[0].qty - mr.items[0].qty), target_list[0]['pending_qty'])
 
     def test_result_for_so_item(self):
         so = make_sales_order()
         report = execute()
-        l = len(report[1])
-        self.assertEqual(so.items[0].qty, report[1][l-1]['pending_qty'])
+        target_list = list(filter(lambda d: d['sales_order_no'] in [so.name], report[1]))
+        self.assertEqual(so.items[0].qty, target_list[0]['pending_qty'])
