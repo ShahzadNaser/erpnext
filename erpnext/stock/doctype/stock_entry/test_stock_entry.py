@@ -190,7 +190,7 @@ class TestStockEntry(unittest.TestCase):
 		create_stock_reconciliation(qty=100, rate=100)
 
 		mtn = make_stock_entry(item_code="_Test Item", source="Stores - TCP1",
-			target="Finished Goods - TCP1", qty=45)
+			target="Finished Goods - TCP1", qty=45, expense_account="Stock In Hand - TCP1")
 
 		self.check_stock_ledger_entries("Stock Entry", mtn.name,
 			[["_Test Item", "Stores - TCP1", -45.0], ["_Test Item", "Finished Goods - TCP1", 45.0]])
