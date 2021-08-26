@@ -147,8 +147,9 @@ def reset_item_valuation_rate(item_code, warehouse_list=None, qty=None, rate=Non
 
 	if not warehouse_list:
 		warehouse_list = frappe.db.sql_list("""
-			select warehouse from `tabBin`
-			where item_code=%s and actual_qty > 0 and company = '_Test Company'
+			select tabBin.warehouse as warehouse from `tabBin`
+			INNER JOIN tabWarehouse ON tabBin.warehouse=tabWarehouse.name
+			where item_code=%s and actual_qty > 0 and company='_Test Company';
 		""", item_code)
 
 		if not warehouse_list:

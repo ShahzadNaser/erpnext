@@ -75,7 +75,7 @@ class Project(Document):
 					add(args)
 
 	def validate_end_date(self):
-		if self.expected_start_date > self.expected_end_date:
+		if self.expected_start_date and self.expected_end_date and self.expected_start_date > self.expected_end_date:
 			frappe.throw(_("Expected End date cannot be greater that Expected Start Date."))
 
 	def is_row_updated(self, row, existing_task_data, fields):

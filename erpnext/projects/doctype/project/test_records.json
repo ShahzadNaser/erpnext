@@ -1,6 +1,8 @@
 [
  {
   "project_name": "_Test Project",
-  "status": "Open"
+  "status": "Open",
+  "expected_end_date": "2021-08-28",
+  "expected_start_date": "2021-08-20"
  }
 ]

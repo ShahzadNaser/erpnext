@@ -55,7 +55,12 @@ class EmployeeBoardingController(Document):
 					"department": self.department,
 					"company": self.company,
 					"task_weight": activity.task_weight
-				}).insert(ignore_permissions=True)
+				})
+			task.append("projects", {
+						"is_default": 1,
+						"project": self.project
+			})
+			task.insert(ignore_permissions=True)
 			activity.db_set("task", task.name)
 			users = [activity.user] if activity.user else []
 			if activity.role:
