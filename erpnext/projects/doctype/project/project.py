@@ -60,7 +60,12 @@ class Project(Document):
 					exp_end_date = add_days(self.expected_start_date, task.start + task.duration),
 					description = task.description,
 					task_weight = task.task_weight
-				)).insert()
+				))
+				task_doc.append("projects", {
+					"is_default": 1,
+					"project": self.name
+				})
+				task_doc.insert()
 				if task.assigned_user:
 					args = {
 						'doctype': 'Task',
