@@ -40,7 +40,8 @@ def get_project(name):
 		project_name = name,
 		status = 'Open',
 		project_template = template.name,
-		expected_start_date = '2019-01-01'
+		expected_start_date = '2019-01-01',
+		expected_end_date = '2019-01-31'
 	)).insert()
 
 	return project
