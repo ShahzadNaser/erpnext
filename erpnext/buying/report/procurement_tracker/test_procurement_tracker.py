@@ -19,7 +19,6 @@ class TestProcurementTracker(unittest.TestCase):
 		}
 		expected_data = self.generate_expected_data()
 		report = execute(filters)
-
 		length = len(report[1])
 		self.assertEqual(expected_data, report[1][length-1])
 
@@ -65,6 +64,8 @@ class TestProcurementTracker(unittest.TestCase):
 			"purchase_order_amt": po.net_total,
 			"purchase_order_amt_in_company_currency": po.base_net_total,
 			"expected_delivery_date": date_obj,
-			"actual_delivery_date": date_obj
+			"actual_delivery_date": date_obj,
+			'batch_no': None,
+   			'package_tag': None
 		}
 		return expected_data
