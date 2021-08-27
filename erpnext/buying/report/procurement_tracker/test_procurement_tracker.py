@@ -66,6 +66,6 @@ class TestProcurementTracker(unittest.TestCase):
 			"expected_delivery_date": date_obj,
 			"actual_delivery_date": date_obj,
 			'batch_no': None,
-   			'package_tag': None
+			'package_tag': None
 		}
 		return expected_data
