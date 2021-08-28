@@ -103,18 +103,19 @@ class TestPaymentEntry(unittest.TestCase):
 			else:
 				raise Exception
 
-	def test_payment_entry_against_si_inr_to_inr(self):
-		si = create_sales_invoice(customer="_Test Customer", debit_to="_Test Receivable - _TC",
-			currency="INR", conversion_rate=1)
-		pe = get_payment_entry("Sales Invoice", si.name, bank_account="_Test Bank - _TC")
+	def test_payment_entry_against_si_usd_to_usd(self):
+		si = create_sales_invoice(customer="_Test Customer USD", debit_to="_Test Receivable USD - _TC",
+			currency="USD", conversion_rate=1)
+		pe = get_payment_entry("Sales Invoice", si.name, bank_account="_Test Bank USD - _TC")
 		pe.reference_no = "1"
 		pe.reference_date = "2016-01-01"
+		pe.target_exchange_rate = 1
 		pe.insert()
 		pe.submit()
 
 		expected_gle = dict((d[0], d) for d in [
-			["_Test Receivable - _TC", 0, 100, si.name],
-			["_Test Bank - _TC", 100.0, 0, None]
+			["_Test Receivable USD - _TC", 0, 100, si.name],
+			["_Test Bank USD - _TC", 100.0, 0, None]
 		])
 
 		self.validate_gl_entries(pe.name, expected_gle)
