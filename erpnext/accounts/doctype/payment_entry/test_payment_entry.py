@@ -103,19 +103,18 @@ class TestPaymentEntry(unittest.TestCase):
 			else:
 				raise Exception
 
-	def test_payment_entry_against_si_usd_to_usd(self):
-		si = create_sales_invoice(customer="_Test Customer USD", debit_to="_Test Receivable USD - _TC",
-			currency="USD", conversion_rate=50)
-		pe = get_payment_entry("Sales Invoice", si.name, bank_account="_Test Bank USD - _TC")
+	def test_payment_entry_against_si_inr_to_inr(self):
+		si = create_sales_invoice(customer="_Test Customer", debit_to="_Test Receivable - _TC",
+			currency="INR", conversion_rate=1)
+		pe = get_payment_entry("Sales Invoice", si.name, bank_account="_Test Bank - _TC")
 		pe.reference_no = "1"
 		pe.reference_date = "2016-01-01"
-		pe.target_exchange_rate = 50
 		pe.insert()
 		pe.submit()
 
 		expected_gle = dict((d[0], d) for d in [
-			["_Test Receivable USD - _TC", 0, 5000, si.name],
-			["_Test Bank USD - _TC", 5000.0, 0, None]
+			["_Test Receivable - _TC", 0, 100, si.name],
+			["_Test Bank - _TC", 100.0, 0, None]
 		])
 
 		self.validate_gl_entries(pe.name, expected_gle)
@@ -175,13 +174,12 @@ class TestPaymentEntry(unittest.TestCase):
 		self.assertEqual(si.payment_schedule[1].paid_amount, 36.0)
 
 	def test_payment_against_sales_invoice_to_check_status(self):
-		si = create_sales_invoice(customer="_Test Customer USD", debit_to="_Test Receivable USD - _TC",
-			currency="USD", conversion_rate=50)
+		si = create_sales_invoice(customer="_Test Customer", debit_to="_Test Receivable - _TC",
+			currency="INR")
 
-		pe = get_payment_entry("Sales Invoice", si.name, bank_account="_Test Bank USD - _TC")
+		pe = get_payment_entry("Sales Invoice", si.name, bank_account="_Test Bank - _TC")
 		pe.reference_no = "1"
 		pe.reference_date = "2016-01-01"
-		pe.target_exchange_rate = 50
 		pe.insert()
 		pe.submit()
 
@@ -432,18 +430,11 @@ class TestPaymentEntry(unittest.TestCase):
 		self.validate_gl_entries(pe.name, expected_gle)
 
 	def test_payment_entry_exchange_gain_loss(self):
-		si =  create_sales_invoice(customer="_Test Customer USD", debit_to="_Test Receivable USD - _TC",
-			currency="USD", conversion_rate=50)
-		pe = get_payment_entry("Sales Invoice", si.name, bank_account="_Test Bank USD - _TC")
+		si =  create_sales_invoice(customer="_Test Customer", debit_to="_Test Receivable - _TC",
+			currency="INR")
+		pe = get_payment_entry("Sales Invoice", si.name, bank_account="_Test Bank - _TC")
 		pe.reference_no = "1"
 		pe.reference_date = "2016-01-01"
-		pe.target_exchange_rate = 55
-
-		pe.append("deductions", {
-			"account": "_Test Exchange Gain/Loss - _TC",
-			"cost_center": "_Test Cost Center - _TC",
-			"amount": -500
-		})
 		pe.save()
 
 		self.assertEqual(pe.unallocated_amount, 0)
@@ -452,9 +443,8 @@ class TestPaymentEntry(unittest.TestCase):
 		pe.submit()
 
 		expected_gle = dict((d[0], d) for d in [
-			["_Test Receivable USD - _TC", 0, 5000, si.name],
-			["_Test Bank USD - _TC", 5500, 0, None],
-			["_Test Exchange Gain/Loss - _TC", 0, 500, None],
+			["_Test Receivable - _TC", 0, 100, si.name],
+			["_Test Bank - _TC", 100, 0, None]
 		])
 
 		self.validate_gl_entries(pe.name, expected_gle)
