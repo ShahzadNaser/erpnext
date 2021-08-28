@@ -88,12 +88,17 @@ class TestStockReconciliation(unittest.TestCase):
 					{"voucher_type": "Stock Reconciliation", "voucher_no": stock_reco.name}))
 
 	def test_get_items(self):
+		from erpnext.stock.doctype.stock_entry.test_stock_entry import make_stock_entry
+
 		create_warehouse("_Test Warehouse Group 1", {"is_group": 1})
 		create_warehouse("_Test Warehouse Ledger 1",
 			{"is_group": 0, "parent_warehouse": "_Test Warehouse Group 1 - _TC"})
 
 		create_item("_Test Stock Reco Item", is_stock_item=1, valuation_rate=100,
-			warehouse="_Test Warehouse Ledger 1 - _TC", opening_stock=100)
+			warehouse="_Test Warehouse Ledger 1 - _TC", create_new_batch=1, has_batch_no=1)
+
+		make_stock_entry(posting_date="2012-12-15", posting_time="02:00", item_code="_Test Stock Reco Item",
+			target="_Test Warehouse Ledger 1 - _TC", qty=100, basic_rate=100, batch_naming_series="BATCH-#####", purpose="Material Receipt")
 
 		items = get_items("_Test Warehouse Group 1 - _TC", nowdate(), nowtime(), "_Test Company")
 
@@ -234,7 +239,7 @@ def create_batch_or_serial_no_items():
 	if not batch_item_doc.has_batch_no:
 		batch_item_doc.has_batch_no = 1
 		batch_item_doc.create_new_batch = 1
-		serial_item_doc.batch_number_series = "BASR.#####"
+		batch_item_doc.batch_number_series = "BASR.#####"
 		batch_item_doc.save(ignore_permissions=True)
 
 def create_stock_reconciliation(**args):
