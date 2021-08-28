@@ -431,7 +431,7 @@ class TestPaymentEntry(unittest.TestCase):
 		self.validate_gl_entries(pe.name, expected_gle)
 
 	def test_payment_entry_exchange_gain_loss(self):
-		si =  create_sales_invoice(customer="_Test Customer", debit_to="_Test Receivable - _TC",
+		si = create_sales_invoice(customer="_Test Customer", debit_to="_Test Receivable - _TC",
 			currency="INR")
 		pe = get_payment_entry("Sales Invoice", si.name, bank_account="_Test Bank - _TC")
 		pe.reference_no = "1"
