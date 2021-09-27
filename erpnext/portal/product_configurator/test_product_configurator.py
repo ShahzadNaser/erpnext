@@ -56,7 +56,7 @@ class TestProductConfigurator(unittest.TestCase):
 
 
 	def create_variant_item(self):
-		if not frappe.db.exists('Item', 'Test Variant PRT'):
+		if not frappe.db.exists('Item', '_Test Variant Item 1'):
 			frappe.get_doc({
 				"description": "_Test Variant Item 1",
 				"doctype": "Item",
