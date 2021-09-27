@@ -73,7 +73,7 @@ class TestBOM(unittest.TestCase):
 		# check if new valuation rate updated in all BOMs
 		for d in frappe.db.sql("""select rate from `tabBOM Item`
 			where parent='BOM-_Test Item Home Desktop Manufactured-001'
-   			and item_code='_Test Item 2' and docstatus=1 and parenttype='BOM'""", as_dict=1):
+			and item_code='_Test Item 2' and docstatus=1 and parenttype='BOM'""", as_dict=1):
 				self.assertEqual(d.rate, rm_rate + 10)
 
 	def test_bom_cost(self):
